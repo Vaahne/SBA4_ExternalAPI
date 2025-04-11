@@ -26,6 +26,8 @@
       paginatedItems.forEach(ele =>{
         const div = document.createElement("div");
         div.classList.add("paginatedDiv");
+        const id = document.createElement("p");
+        id.textContent = "ID: "+ele.id;
         const name = document.createElement("p");
         name.textContent = ele.name;
         const image = document.createElement("img");
@@ -33,7 +35,7 @@
         image.setAttribute("alt",ele.name);
         image.classList.add("pageImage");
         
-
+        div.appendChild(id);
         div.appendChild(name);
         div.appendChild(image);
         container.appendChild(div);

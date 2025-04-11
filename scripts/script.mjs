@@ -152,18 +152,60 @@ function update(){
 
     const id = document.createElement("input");
     id.type = "text";
+    id.placeholder = "Enter Id "
 
     const btn = document.createElement("input");
     btn.type = "submit";
-    btn.value = "Update";  
+    btn.value = "Update"; 
+    
+    div.appendChild(id);
+    div.appendChild(btn);
+
+    displayContent.innerHTML = "";
+    displayContent.appendChild(div);
     
     btn.addEventListener('click',(e)=>{
+        e.preventDefault();
         if(id.value){
-            updateData(id);
+            updateData(id.value);
         }
     });
 }
 
-async function updateData(id){
+function updateData(id){
+    let toUpdate = data.find(d => d.id == id);
+    if(!toUpdate){
+        alert(`No data found with ID: ${id}`);
+        throw new Error(`No data found with ID: ${id}`);
+    }
+    displayFetchedData(toUpdate);
+}
+
+function displayFetchedData(toUpdate){
+    const div = document.createElement("div");
+    div.classList.add("postDiv");
+
+    const name = document.createElement("input");
+    name.type = "text";
+    name.value = toUpdate.name;
+
+    const btn = document.createElement("input");
+    btn.type = "submit";
+    btn.value = "Update"; 
     
+    div.appendChild(name);
+    div.appendChild(btn);
+    displayContent.innerHTML = "";
+    displayContent.appendChild(div);
+
+    btn.addEventListener('click',async (e)=>{
+        if(!name.value){
+            alert("Please enter a valid name !!!");
+            throw new Error ("Please enter a valid name !!!");
+        }
+        let updatedName = {name: name.value};
+        const res = await axios.put(`https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users/${id}`,updatedName);
+        console.log(res.data);
+    });
+
 }
