@@ -1,6 +1,6 @@
 // import * as grid from "./grid.mjs";
 import * as page from "./pagination.mjs";
-import {setData,deleteData, postData} from "./crud.mjs";
+import {setData,deleteData} from "./crud.mjs";
 
 const request = document.getElementById("request");
 const displayContent = document.querySelector(".displayContent");
@@ -80,7 +80,8 @@ function post(){
     displayContent.innerHTML = "";
     displayContent.appendChild(form)
 
-    btn.addEventListener('click',()=>{
+    btn.addEventListener('click',(e)=>{
+        e.preventDefault();
         if(name.value && job.value && email.value && street.value && city.value && country.value){
             postData(name.value,job.value,email.value,street.value,city.value,country.value,form);
             return
@@ -121,6 +122,29 @@ function toBeDeleted(){
     })
 }
 
+async function postData(name,job,email,street,city,country,form){
+    let rawBody = JSON.stringify({
+        "name": name,
+        "job" : job,
+        "email": email,
+        "address" : {
+            "street": street,
+            "city": city,
+            "country":country
+        }
+    });
+
+     const newUser = await fetch("https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users",{
+        method:"POST",
+        headers:{
+            "Content-type":"application/json"
+        },
+        body: rawBody
+    }); 
+    console.log(await newUser.json());
+    // form.reset();
+    alert("Posted Successfully!!");
+}
 
 // getData();
 // postData();

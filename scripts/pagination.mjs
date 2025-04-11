@@ -1,5 +1,5 @@
   // import * as grid from "./grid.mjs";
-  const itemsPerPage = 1;
+  const itemsPerPage = 3;
   let currentPage = 1;
 
   const container = document.getElementById("paginationData") ;
@@ -28,18 +28,13 @@
         div.classList.add("paginatedDiv");
         const name = document.createElement("p");
         name.textContent = ele.name;
-        const email = document.createElement("p");
-        email.textContent = ele.email;
-        const job = document.createElement("p");
-        job.textContent = ele.job;
-        const address = document.createElement("p");
-        address.textContent = "Address :\n"+ ele.address.street+","+ele.address.city+","+ele.address.country;
+        const image = document.createElement("img");
+        image.setAttribute("src",ele.avatar);
+        image.classList.add("pageImage");
         
 
         div.appendChild(name);
-        div.appendChild(email)
-        div.appendChild(job);
-        div.appendChild(address);
+        div.appendChild(image);
         container.appendChild(div);
         pagination.style.display = originalStyle;
     })
