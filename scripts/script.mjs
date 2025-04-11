@@ -9,9 +9,9 @@ request.addEventListener('change',(e)=>{
     e.preventDefault();
     // displayContent.textContent = "";
     const value = e.target.value;
-    // if(value == "get"){
-    //     getData();
-    // } else 
+    if(value == "get"){
+        getData();
+    } else 
     if(value == "post"){
         post();
     } else if(value == "delete"){
@@ -130,10 +130,8 @@ async function postData(name,image){
 
 async function deleteData(id){  
 
-    // let raw = {"id":id}
-    // console.log(data);
-    let raw = data.find(d => d.id == id);
-    alert(raw);
+    // let raw = data.find(d => d.id == id);
+    // alert(raw);
 
     const response = await fetch(`https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users/${id}`,{
         method:"DELETE"})
@@ -144,6 +142,3 @@ async function deleteData(id){
     }
     console.log("Delete Data");
 }
-
-// getData();
-// postData();
