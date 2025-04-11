@@ -17,7 +17,7 @@ request.addEventListener('change',(e)=>{
     } else if(value == "delete"){
         toBeDeleted();
     }else if(value == "put"){
-        
+        update();
     }
 });
 
@@ -130,8 +130,11 @@ async function postData(name,image){
 
 async function deleteData(id){  
 
-    // let raw = data.find(d => d.id == id);
-    // alert(raw);
+    let raw = data.find(d => d.id == id);
+    if(!raw){
+        alert(`No data found with Id: ${id}`);
+        throw new Error (`No data found with Id: ${id}`);
+    }
 
     const response = await fetch(`https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users/${id}`,{
         method:"DELETE"})
@@ -140,5 +143,27 @@ async function deleteData(id){
     if(response.ok){
         alert("Successfully deleted")
     }
-    console.log("Delete Data");
+    // console.log("Delete Data");
+}
+
+function update(){
+    const div = document.createElement("div");
+    div.classList.add("postDiv");
+
+    const id = document.createElement("input");
+    id.type = "text";
+
+    const btn = document.createElement("input");
+    btn.type = "submit";
+    btn.value = "Update";  
+    
+    btn.addEventListener('click',(e)=>{
+        if(id.value){
+            updateData(id);
+        }
+    });
+}
+
+async function updateData(id){
+    
 }
