@@ -30,6 +30,7 @@
         name.textContent = ele.name;
         const image = document.createElement("img");
         image.setAttribute("src",ele.avatar);
+        image.setAttribute("alt",ele.name);
         image.classList.add("pageImage");
         
 
@@ -39,7 +40,7 @@
         pagination.style.display = originalStyle;
     })
     // grid.createGrid(2,paginatedItems);
-}
+  }
 
   // Generate pagination buttons
   export function setupPagination() {

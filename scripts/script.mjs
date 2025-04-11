@@ -1,6 +1,6 @@
 // import * as grid from "./grid.mjs";
 import * as page from "./pagination.mjs";
-import {setData,deleteData} from "./crud.mjs";
+import {setData} from "./crud.mjs";
 
 const request = document.getElementById("request");
 const displayContent = document.querySelector(".displayContent");
@@ -9,22 +9,25 @@ request.addEventListener('change',(e)=>{
     e.preventDefault();
     // displayContent.textContent = "";
     const value = e.target.value;
-    if(value == "get"){
-        getData();
-    } else 
+    // if(value == "get"){
+    //     getData();
+    // } else 
     if(value == "post"){
         post();
     } else if(value == "delete"){
         toBeDeleted();
+    }else if(value == "put"){
+        
     }
 });
 
 let data = []
+getData();
 async function getData(){
     const response = await axios("https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users");
     data = response.data;
     console.log(data);
-    setData(data);
+    setData(data);     
     page.setData(data);
     page.displayPage(1);        // 2 steps to display in paginated data
     page.setupPagination();
@@ -41,39 +44,20 @@ function post(){
     const name = document.createElement("input");
     name.type = "text";
     name.placeholder = "Enter your name"
+    name.required = true;
+    name.minLength = 4;
+    name.maxLength = 10;
 
-    const job =  document.createElement("input");
-    job.type = "text";
-    job.placeholder = "Enter your job";
-
-    const email =  document.createElement("input");
-    email.type = "email";
-    email.placeholder = "Enter your email";
-    
-    const street =  document.createElement("input");
-    street.type = "text";
-    street.placeholder = "Enter your Street";
-
-    
-    const city =  document.createElement("input");
-    city.type = "text";
-    city.placeholder = "Enter your City";
-
-    
-    const country =  document.createElement("input");
-    country.type = "text";
-    country.placeholder = "Enter your Country";
+    const image =  document.createElement("input");
+    image.type = "text";
+    image.placeholder = "Enter your image link";
 
     const btn = document.createElement("input");
     btn.type = "submit";
     btn.value = "Post";
 
     div.appendChild(name);
-    div.appendChild(job);
-    div.appendChild(email);
-    div.appendChild(street);
-    div.appendChild(city);
-    div.appendChild(country);
+    div.appendChild(image);
     div.appendChild(btn);
 
     form.appendChild(div)
@@ -82,8 +66,8 @@ function post(){
 
     btn.addEventListener('click',(e)=>{
         e.preventDefault();
-        if(name.value && job.value && email.value && street.value && city.value && country.value){
-            postData(name.value,job.value,email.value,street.value,city.value,country.value,form);
+        if(name.value && image.value){
+            postData(name.value,image.value);
             return
         }
         alert("Please fill the fields!!!");
@@ -99,39 +83,37 @@ function toBeDeleted(){
     const div = document.createElement("div");
     div.classList.add("postDiv");
 
-    const email =  document.createElement("input");
-    email.type = "email";
-    email.placeholder = "Enter your email";
+    const id = document.createElement("input");
+    id.type = "text";
 
     const btn = document.createElement("input");
     btn.type = "submit";
     btn.value = "Delete";
 
-    div.appendChild(email);
+    div.appendChild(id);
     div.appendChild(btn);
     form.appendChild(div)
     displayContent.innerHTML = "";
     displayContent.appendChild(form)
     
-    btn.addEventListener('click',()=>{
-        if(email.value ){
-            deleteData(email.value);
+    btn.addEventListener('click',(e)=>{
+        e.preventDefault();
+        if(id.value ){
+            deleteData(id.value);
             return
         }
-        alert("Enter a valid email");
+        alert("Enter a valid Id");
     })
 }
 
-async function postData(name,job,email,street,city,country,form){
+async function postData(name,image){
+    
+    console.log(data[data.length-1]);
+    image = "https://avatars.githubusercontent.com/u/85844724"; 
     let rawBody = JSON.stringify({
+        "id": 21,
         "name": name,
-        "job" : job,
-        "email": email,
-        "address" : {
-            "street": street,
-            "city": city,
-            "country":country
-        }
+        "avatar": image
     });
 
      const newUser = await fetch("https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users",{
@@ -144,6 +126,23 @@ async function postData(name,job,email,street,city,country,form){
     console.log(await newUser.json());
     // form.reset();
     alert("Posted Successfully!!");
+}
+
+async function deleteData(id){  
+
+    // let raw = {"id":id}
+    // console.log(data);
+    let raw = data.find(d => d.id == id);
+    alert(raw);
+
+    const response = await fetch(`https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users/${id}`,{
+        method:"DELETE"})
+        
+    console.log(response.ok);
+    if(response.ok){
+        alert("Successfully deleted")
+    }
+    console.log("Delete Data");
 }
 
 // getData();

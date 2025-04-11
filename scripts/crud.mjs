@@ -6,9 +6,9 @@ export function setData(d){
 
 
 
-export async function deleteData(email){  ///api/users/2
+export async function deleteData(id){  ///api/users/2
 
-    let raw = {"email":email}
+    let raw = {"id":id}
 
     const response = await fetch("https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users",{
         method:"DELETE",
