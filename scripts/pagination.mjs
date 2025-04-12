@@ -3,7 +3,8 @@
   let currentPage = 1;
 
   const container = document.getElementById("paginationData") ;
-  const pagination = document.getElementById("pagination") 
+  const pagination = document.getElementById("pagination");
+  const displayContent = document.querySelector("#normalData");
 
   let originalStyle = pagination.style.display ;
 
@@ -39,7 +40,10 @@
         div.appendChild(name);
         div.appendChild(image);
         container.appendChild(div);
+        displayContent.innerHTML = "";
         pagination.style.display = originalStyle;
+    // alert("inside displaypage of pagination")
+
     })
     // grid.createGrid(2,paginatedItems);
   }
@@ -81,4 +85,9 @@
         }
       });
     });
+  }
+
+  export function clear(){
+    pagination.style.display = "none";
+    container.innerHTML = "";
   }

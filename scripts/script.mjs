@@ -3,9 +3,10 @@ import * as page from "./pagination.mjs";
 import { setData } from "./crud.mjs";
 
 const request = document.getElementById("request");
-const displayContent = document.querySelector(".displayContent");
+const displayContent = document.querySelector("#normalData");
 const requestBtn = document.querySelector("#requestBtn");
-document.addEventListener("DOMContentLoaded",getData);
+
+// document.addEventListener("DOMContentLoaded",getData);
 
 
 requestBtn.addEventListener('click', (e) => {
@@ -28,8 +29,8 @@ async function getData() {
     try{
         const response = await axios("https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users");
         data = response.data;
-        console.log(data);
-        // setData(data);
+        
+        setData(data);
         page.setData(data);
         page.displayPage(1);        // 2 steps to display in paginated data
         page.setupPagination();
@@ -62,6 +63,7 @@ function post() {
 
     form.appendChild(div)
     displayContent.innerHTML = "";
+    page.clear();
     displayContent.appendChild(form)
 
     btn.addEventListener('click', (e) => {
@@ -95,6 +97,7 @@ function toBeDeleted() {
     div.appendChild(btn);
     form.appendChild(div)
     displayContent.innerHTML = "";
+    page.clear();
     displayContent.appendChild(form)
 
     btn.addEventListener('click', (e) => {
@@ -166,6 +169,7 @@ function update() {
     div.appendChild(btn);
 
     displayContent.innerHTML = "";
+    page.clear();
     displayContent.appendChild(div);
 
     btn.addEventListener('click', (e) => {
@@ -200,6 +204,7 @@ function displayFetchedData(toUpdate) {
     div.appendChild(name);
     div.appendChild(btn);
     displayContent.innerHTML = "";
+    page.clear();
     displayContent.appendChild(div);
 
     btn.addEventListener('click', async (e) => {
@@ -209,7 +214,9 @@ function displayFetchedData(toUpdate) {
         }
         try{
             let updatedName = { name: name.value };
+
             const res = await axios.put(`https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users/${toUpdate.id}`, updatedName);
+            
             console.log(res.data);
         }catch(err){
             console.log(err);
