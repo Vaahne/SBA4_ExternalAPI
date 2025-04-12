@@ -1,3 +1,5 @@
+import { BASEURL } from "./script.mjs";
+
 const displayContent = document.querySelector("#normalData");
 
 export function post() {
@@ -7,17 +9,21 @@ export function post() {
     const div = document.createElement("div");
     div.classList.add("postDiv");
 
+    const desc = document.createElement("h6");
+    desc.textContent = "Post Data into API";
+
     const name = document.createElement("input");
     name.type = "text";
     name.placeholder = "Enter your name"
     name.required = true;
     name.minLength = 4;
-    name.maxLength = 10;
+    name.maxLength = 20;
 
     const btn = document.createElement("input");
     btn.type = "submit";
     btn.value = "Post";
 
+    div.appendChild(desc);
     div.appendChild(name);
     div.appendChild(btn);
 
@@ -27,8 +33,10 @@ export function post() {
 
     btn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (name.value) {
-            postData(name.value);
+        let val = name.value;
+        if (val) {
+            name.value = "";
+            postData(val);
             return
         }
         alert("Please fill the fields!!!");
@@ -43,7 +51,7 @@ async function postData(name) {
             "avatar": image
         });
 
-        const newUser = await fetch("https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users", {
+        const newUser = await fetch(`${BASEURL}`, {
             method: "POST",
             headers: {
                 "Content-type": "application/json"

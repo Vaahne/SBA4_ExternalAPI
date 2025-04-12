@@ -19,15 +19,16 @@ nav.header{
 }
 .formClass{
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     justify-content: center;
-    width: 20rem;
+    /* width: 20rem; */
     padding: 2rem;
     margin: 3rem auto;
 }
 .formClass > *{
     margin: .3rem;
     text-align: center;
+    border-radius: .3em;
 }
 #displayGrid{
     display: grid;
@@ -64,10 +65,12 @@ nav.header{
     margin: .4rem auto;
     padding: 1rem;
     text-align: center;
-    width: 14rem;
+    width: 17rem;
     height: 9em;
-    background-color: #ae6cae;
+    background-color: #7f5a99;
     border: 3px solid pink;
+    border-radius: 1rem;
+    color: #e5cfe8;
 }
 .postDiv > *{
     margin: .1em;
@@ -78,6 +81,17 @@ nav.header{
 }
 .postForm{
     
+}
+.searchDiv{
+    width: 17rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-content: center;
+    text-align: center;
+    margin: .4rem auto;
+    padding: .2rem;
+    border: 3px solid #491c538f;
 }
 .pageImage{
     height: 72%;

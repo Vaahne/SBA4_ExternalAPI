@@ -1,4 +1,4 @@
-import {data} from "./script.mjs";
+import {BASEURL,data} from "./script.mjs";
 
 const displayContent = document.querySelector("#normalData");
 
@@ -9,6 +9,10 @@ export function toBeDeleted() {
     const div = document.createElement("div");
     div.classList.add("postDiv");
 
+    const desc = document.createElement("h6");
+    desc.textContent = "Delete Data from API";
+
+
     const id = document.createElement("input");
     id.type = "text";
     id.placeholder = "Enter Id to delete";
@@ -17,6 +21,7 @@ export function toBeDeleted() {
     btn.type = "submit";
     btn.value = "Delete";
 
+    div.appendChild(desc);
     div.appendChild(id);
     div.appendChild(btn);
     form.appendChild(div)
@@ -25,8 +30,10 @@ export function toBeDeleted() {
 
     btn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (id.value) {
-            deleteData(id.value);
+        let val = id.value;
+        if (val) {
+            id.value = "";
+            deleteData(val);
             return
         }
         alert("Enter a valid Id");
@@ -41,7 +48,7 @@ async function deleteData(id) {
         throw new Error(`No data found with Id: ${id}`);
     }
 
-    const response = await fetch(`https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users/${id}`, {
+    const response = await fetch(`${BASEURL}/${id}`, {
         method: "DELETE"
     })
 

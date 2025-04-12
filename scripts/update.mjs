@@ -1,4 +1,4 @@
-import {data} from "./script.mjs";
+import {BASEURL, data,getData} from "./script.mjs";
 
 const displayContent = document.querySelector("#normalData");
 
@@ -6,14 +6,18 @@ export function update() {
     const div = document.createElement("div");
     div.classList.add("postDiv");
 
+    const desc = document.createElement("h6");
+    desc.textContent = "Update Data into API";
+
     const id = document.createElement("input");
     id.type = "text";
     id.placeholder = "Enter Id to update"
 
     const btn = document.createElement("input");
     btn.type = "submit";
-    btn.value = "Update";
+    btn.value = "Get Details";
 
+    div.appendChild(desc);
     div.appendChild(id);
     div.appendChild(btn);
 
@@ -23,8 +27,10 @@ export function update() {
 
     btn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (id.value) {
-            updateData(id.value);
+        let val = id.value;
+        if (val) {
+            id.value = "";
+            updateData(val);
         }
     });
 }
@@ -42,6 +48,9 @@ function displayFetchedData(toUpdate) {
     const div = document.createElement("div");
     div.classList.add("postDiv");
 
+    const desc = document.createElement("h6");
+    desc.textContent = "Update Data into API";
+
     const name = document.createElement("input");
     name.type = "text";
     name.value = toUpdate.name;
@@ -50,6 +59,7 @@ function displayFetchedData(toUpdate) {
     btn.type = "submit";
     btn.value = "Update";
 
+    div.appendChild(desc);
     div.appendChild(name);
     div.appendChild(btn);
     displayContent.innerHTML = "";
@@ -64,10 +74,10 @@ function displayFetchedData(toUpdate) {
         try{
             let updatedName = { name: name.value };
 
-            await axios.put(`https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users/${toUpdate.id}`,
+            await axios.put(`${BASEURL}/${toUpdate.id}`,
                          updatedName).then(r => {
                             console.log(r.data);
-                            // name.reset();
+                            getData();
                             alert("Updated Successfully!!!");
                          })
         }catch(err){
