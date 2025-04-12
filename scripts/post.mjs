@@ -4,7 +4,7 @@ const displayContent = document.querySelector("#normalData");
 
 export function post() {
     const form = document.createElement("form");
-    form.classList.add("postForm");
+    // form.classList.add("postForm");
 
     const div = document.createElement("div");
     div.classList.add("postDiv");
