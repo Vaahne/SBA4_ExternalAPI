@@ -53,7 +53,7 @@ nav.header{
     text-align: center;
     margin: .4rem;
     padding: .2rem;
-    border: 3px solid #2242c9;;
+    border: 3px solid #491c538f;
     height: 20rem;
 }
 .postDiv{
@@ -62,9 +62,12 @@ nav.header{
     align-content: center;
     justify-content: center;
     margin: .4rem auto;
-    padding: .2rem;
+    padding: 1rem;
     text-align: center;
     width: 14rem;
+    height: 9em;
+    background-color: #ae6cae;
+    border: 3px solid pink;
 }
 .postDiv > *{
     margin: .1em;
