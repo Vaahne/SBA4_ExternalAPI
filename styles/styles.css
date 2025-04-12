@@ -1,6 +1,14 @@
 body{
     font-family: 'Courier New', Courier, monospace;
-    background-color: blanchedalmond;
+    background-color: #6b5373;
+    text-align: center;
+    font-weight: bolder;
+}
+.title{
+    font-size: 2.7rem;
+    font-weight: bolder;
+    color:#47045d;
+    text-shadow: white;
 }
 nav.header{
     display: flex;
@@ -45,7 +53,7 @@ nav.header{
     text-align: center;
     margin: .4rem;
     padding: .2rem;
-    border: 3px solid grey;
+    border: 3px solid #2242c9;;
     height: 20rem;
 }
 .postDiv{

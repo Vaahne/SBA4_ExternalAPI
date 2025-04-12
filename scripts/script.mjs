@@ -1,40 +1,45 @@
 // import * as grid from "./grid.mjs";
 import * as page from "./pagination.mjs";
-import {setData} from "./crud.mjs";
+import { setData } from "./crud.mjs";
 
 const request = document.getElementById("request");
 const displayContent = document.querySelector(".displayContent");
+const requestBtn = document.querySelector("#requestBtn");
+document.addEventListener("DOMContentLoaded",getData);
 
-request.addEventListener('change',(e)=>{
+
+requestBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    // displayContent.textContent = "";
-    const value = e.target.value;
-    if(value == "get"){
+    const value = request.value;
+    if (value == "get") 
         getData();
-    } else 
-    if(value == "post"){
+    else if (value == "post") 
         post();
-    } else if(value == "delete"){
+    else if (value == "delete") 
         toBeDeleted();
-    }else if(value == "put"){
-        update();
-    }
+    else if (value == "put") 
+        update();   
 });
 
 let data = []
-getData();
-async function getData(){
-    const response = await axios("https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users");
-    data = response.data;
-    console.log(data);
-    setData(data);     
-    page.setData(data);
-    page.displayPage(1);        // 2 steps to display in paginated data
-    page.setupPagination();
-    // grid.createGrid(3,data);     // to display in grid
+
+
+async function getData() {
+    try{
+        const response = await axios("https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users");
+        data = response.data;
+        console.log(data);
+        // setData(data);
+        page.setData(data);
+        page.displayPage(1);        // 2 steps to display in paginated data
+        page.setupPagination();
+        // grid.createGrid(3,data);     // to display in grid
+    }catch(err){
+        console.log(err);
+    }
 }
 
-function post(){
+function post() {
     const form = document.createElement("form");
     form.classList.add("postForm");
 
@@ -48,26 +53,21 @@ function post(){
     name.minLength = 4;
     name.maxLength = 10;
 
-    const image =  document.createElement("input");
-    image.type = "text";
-    image.placeholder = "Enter your image link";
-
     const btn = document.createElement("input");
     btn.type = "submit";
     btn.value = "Post";
 
     div.appendChild(name);
-    div.appendChild(image);
     div.appendChild(btn);
 
     form.appendChild(div)
     displayContent.innerHTML = "";
     displayContent.appendChild(form)
 
-    btn.addEventListener('click',(e)=>{
+    btn.addEventListener('click', (e) => {
         e.preventDefault();
-        if(name.value && image.value){
-            postData(name.value,image.value);
+        if (name.value) {
+            postData(name.value);
             return
         }
         alert("Please fill the fields!!!");
@@ -76,7 +76,7 @@ function post(){
 
 
 
-function toBeDeleted(){
+function toBeDeleted() {
     const form = document.createElement("form");
     form.classList.add("postForm");
 
@@ -85,6 +85,7 @@ function toBeDeleted(){
 
     const id = document.createElement("input");
     id.type = "text";
+    id.placeholder = "Enter Id to delete";
 
     const btn = document.createElement("input");
     btn.type = "submit";
@@ -95,10 +96,10 @@ function toBeDeleted(){
     form.appendChild(div)
     displayContent.innerHTML = "";
     displayContent.appendChild(form)
-    
-    btn.addEventListener('click',(e)=>{
+
+    btn.addEventListener('click', (e) => {
         e.preventDefault();
-        if(id.value ){
+        if (id.value) {
             deleteData(id.value);
             return
         }
@@ -106,82 +107,85 @@ function toBeDeleted(){
     })
 }
 
-async function postData(name,image){
-    
-    console.log(data[data.length-1]);
-    image = "https://avatars.githubusercontent.com/u/85844724"; 
-    let rawBody = JSON.stringify({
-        "id": 21,
-        "name": name,
-        "avatar": image
-    });
+async function postData(name) {
+    try {
+        let image = "https://avatars.githubusercontent.com/u/85844724";
+        let rawBody = JSON.stringify({
+            "name": name,
+            "avatar": image
+        });
 
-     const newUser = await fetch("https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users",{
-        method:"POST",
-        headers:{
-            "Content-type":"application/json"
-        },
-        body: rawBody
-    }); 
-    console.log(await newUser.json());
-    // form.reset();
-    alert("Posted Successfully!!");
-}
-
-async function deleteData(id){  
-
-    let raw = data.find(d => d.id == id);
-    if(!raw){
-        alert(`No data found with Id: ${id}`);
-        throw new Error (`No data found with Id: ${id}`);
+        const newUser = await fetch("https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: rawBody
+        });
+        console.log(await newUser.json());
+        console.log(data[data.length - 1]);
+        alert("Posted Successfully!!");
+    } catch (error) {
+        console.log(error);
     }
 
-    const response = await fetch(`https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users/${id}`,{
-        method:"DELETE"})
-        
+}
+
+async function deleteData(id) {
+
+    let raw = data.find(d => d.id == id);
+    if (!raw) {
+        alert(`No data found with Id: ${id}`);
+        throw new Error(`No data found with Id: ${id}`);
+    }
+
+    const response = await fetch(`https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users/${id}`, {
+        method: "DELETE"
+    })
+
     console.log(response.ok);
-    if(response.ok){
+    if (response.ok) {
         alert("Successfully deleted")
     }
     // console.log("Delete Data");
 }
 
-function update(){
+function update() {
     const div = document.createElement("div");
     div.classList.add("postDiv");
 
     const id = document.createElement("input");
     id.type = "text";
-    id.placeholder = "Enter Id "
+    id.placeholder = "Enter Id to update"
 
     const btn = document.createElement("input");
     btn.type = "submit";
-    btn.value = "Update"; 
-    
+    btn.value = "Update";
+
     div.appendChild(id);
     div.appendChild(btn);
 
     displayContent.innerHTML = "";
     displayContent.appendChild(div);
-    
-    btn.addEventListener('click',(e)=>{
+
+    btn.addEventListener('click', (e) => {
         e.preventDefault();
-        if(id.value){
+        if (id.value) {
             updateData(id.value);
         }
     });
 }
 
-function updateData(id){
+function updateData(id) {
     let toUpdate = data.find(d => d.id == id);
-    if(!toUpdate){
+    if (!toUpdate) {
         alert(`No data found with ID: ${id}`);
         throw new Error(`No data found with ID: ${id}`);
     }
     displayFetchedData(toUpdate);
 }
 
-function displayFetchedData(toUpdate){
+function displayFetchedData(toUpdate) {
     const div = document.createElement("div");
     div.classList.add("postDiv");
 
@@ -191,21 +195,25 @@ function displayFetchedData(toUpdate){
 
     const btn = document.createElement("input");
     btn.type = "submit";
-    btn.value = "Update"; 
-    
+    btn.value = "Update";
+
     div.appendChild(name);
     div.appendChild(btn);
     displayContent.innerHTML = "";
     displayContent.appendChild(div);
 
-    btn.addEventListener('click',async (e)=>{
-        if(!name.value){
+    btn.addEventListener('click', async (e) => {
+        if (!name.value) {
             alert("Please enter a valid name !!!");
-            throw new Error ("Please enter a valid name !!!");
+            throw new Error("Please enter a valid name !!!");
         }
-        let updatedName = {name: name.value};
-        const res = await axios.put(`https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users/${id}`,updatedName);
-        console.log(res.data);
+        try{
+            let updatedName = { name: name.value };
+            const res = await axios.put(`https://67f8a74b2466325443ed4903.mockapi.io/sba4/v1/users/${toUpdate.id}`, updatedName);
+            console.log(res.data);
+        }catch(err){
+            console.log(err);
+        }
     });
 
 }
